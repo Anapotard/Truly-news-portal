@@ -51,7 +51,7 @@ const NewsList = () => {
       <Link to={"/"}>
         <button
           onClick={refreshPage}
-          className="bg-blue-500 text-white px-2 py-1 rounded-full text-sm mb-4"
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-20 mb-10 flex items-center"
         >
           Back home
         </button>
@@ -82,6 +82,7 @@ const NewsList = () => {
                 url={article.url}
                 author={article.author}
                 publishedAt={article.publishedAt}
+                content={article.content}
               />
               <Link
                 to={`/article/${encodeURIComponent(article.title)}`}

@@ -26,6 +26,7 @@ const ArticlePage = () => {
         <p className="text-lg mb-4">{article.description}</p>
         <p className="text-4xl font-bold mb-4">{article.author}</p>
         <p className="text-lg mb-4">{article.publishedAt}</p>
+        <p className="text-lg mb-4">{article.content}</p>
       </div>
     </div>
   );

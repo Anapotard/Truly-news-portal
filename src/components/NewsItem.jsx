@@ -7,6 +7,7 @@ const NewsItem = ({
   urlToImage,
   author,
   publishedAt,
+  content,
 }) => {
   return (
     <div className="news-app">
@@ -24,6 +25,7 @@ const NewsItem = ({
           <p className="text-lg font-normal text-gray-600">{description}</p>
           <p className="text 3xl font-bold text-slate-700 mb-3">{author}</p>
           <p className="text-lg font-normal text-gray-600">{publishedAt}</p>
+          <p className="text-lg font-normal text-gray-600">{content}</p>
         </div>
       </div>
     </div>
