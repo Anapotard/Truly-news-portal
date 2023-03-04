@@ -47,7 +47,7 @@ const NewsList = () => {
     setLimit((prevValue) => prevValue + 4);
   };
   return (
-    <div className="container mx-auto py-36 px-8">
+    <div className="container mx-auto py-8 px-8">
       <Link to={"/"}>
         <button
           onClick={refreshPage}
