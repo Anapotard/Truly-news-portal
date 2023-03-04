@@ -39,7 +39,7 @@ const NewsList = () => {
     setSortBy(event.target.value);
   };
 
-  function refreshPage() {
+  const refreshPage = () => {
     window.location.reload(false);
   }
 
