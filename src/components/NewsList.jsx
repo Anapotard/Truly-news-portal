@@ -1,35 +1,25 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import NewsItem from "./NewsItem";
 import { Link } from "react-router-dom";
+import { fetchArticles } from "../store/thunks/fetchArticles";
+import { useThunk } from "../hooks/useThunk";
 
 const NewsList = () => {
-  const [articles, setArticles] = useState([]);
+  const [doFetchArticles, isLoadingArticles, loadingArticlesError] =
+    useThunk(fetchArticles); // replace direct api call with thunk
+
+  const { articles } = useSelector((state) => state.articles);
+
+  //const [articles, setArticles] = useState([]);
   const [limit, setLimit] = useState(20);
   const [query, setQuery] = useState("");
   const [sortBy, setSortBy] = useState("publishedAt");
 
   useEffect(() => {
-    const getNews = async () => {
-      const response = await axios.get(
-        "https://newsapi.org/v2/top-headlines?sources=techcrunch&apiKey=47d4d55af52a478086c76341b429757e"
-      );
-      console.log(response);
-      setArticles(response.data.articles);
-    };
-    getNews();
-  }, []);
+    doFetchArticles({ query, sortBy });
+  }, [doFetchArticles, query, sortBy]);
 
-  useEffect(() => {
-    const getNews = async () => {
-      const response = await axios.get(
-        `https://newsapi.org/v2/everything?q=${query}&sortBy=${sortBy}&apiKey=47d4d55af52a478086c76341b429757e`
-      );
-      console.log(response);
-      setArticles(response.data.articles);
-    };
-    getNews();
-  }, [query, sortBy]);
 
   const handleSearch = (event) => {
     setQuery(event.target.value);
@@ -41,7 +31,7 @@ const NewsList = () => {
 
   const refreshPage = () => {
     window.location.reload(false);
-  }
+  };
 
   const loadMore = () => {
     setLimit((prevValue) => prevValue + 4);
@@ -74,22 +64,23 @@ const NewsList = () => {
       <div className="grid lg:grid-cols-3 gap-6">
         {articles.slice(0, limit).map((article) => {
           return (
-            <div className="shadow-lg rounded-lg">
+            <div
+              className="shadow-lg rounded-lg overflow-hidden flex flex-col h-full"
+              key={article.web_url}
+            >
+              <div className="flex-grow">
               <NewsItem
-                urlToImage={article.urlToImage}
-                title={article.title}
-                description={article.description}
-                url={article.url}
-                author={article.author}
-                publishedAt={article.publishedAt}
-                content={article.content}
+                article={article}
               />
-              <Link
-                to={`/article/${encodeURIComponent(article.title)}`}
-                className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
-              >
-                Read more
-              </Link>
+              </div>
+              <div className="p-4">
+                <Link
+                  to={`/article/${encodeURIComponent(article.web_url)}`}
+                  className="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600"
+                >
+                  Read more
+                </Link>
+              </div>
             </div>
           );
         })}

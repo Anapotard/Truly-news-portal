@@ -1,32 +1,40 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchArticleDetails } from "../store/thunks/fetchArticleDetails";
 
 const ArticlePage = () => {
   const { articleTitle } = useParams(); // Get the article ID from the URL parameter
-  const [article, setArticle] = useState({});
+  const dispatch = useDispatch();
+  const articleData = useSelector((state) => state.article.article);
+  console.log("articleData:", articleData);
 
   useEffect(() => {
-    const getArticle = async () => {
-      const response = await axios.get(
-        `https://newsapi.org/v2/everything?q=${articleTitle}&apiKey=47d4d55af52a478086c76341b429757e`
-      );
-      console.log(response);
-      setArticle(response.data.articles[0]);
-    };
-    getArticle();
-  }, [articleTitle]);
+    dispatch(fetchArticleDetails(articleTitle));
+  }, [dispatch, articleTitle]);
+
+  if(!articleData) {
+    return <div>Loading...</div>
+  }
+
+  const xlargeImage = articleData.multimedia.find(
+    (item) => item.subtype === "xlarge"
+  );
+  const imageUrl = xlargeImage
+    ? `https://www.nytimes.com/${xlargeImage.url}`
+    : null;
+
+
+  const { web_url, lead_paragraph, abstract } = articleData;
 
   return (
     <div className="container mx-auto py-36 px-8">
       <div className="shadow-lg rounded-lg">
-        <img src={article.urlToImage} alt={article.title} className="mb-4" />
-        <h1 className="text-4xl font-bold mb-4">{article.title}</h1>
-        <p className="text-lg mb-4">{article.description}</p>
-        <p className="text-4xl font-bold mb-4">{article.author}</p>
-        <p className="text-lg mb-4">{article.publishedAt}</p>
-        <p className="text-lg mb-4">{article.content}</p>
+        <img src={imageUrl} alt={abstract} className="mb-4" />
+        <h1 className="text-4xl font-bold mb-4">{web_url}</h1>
+        <p className="text-lg mb-4">{lead_paragraph}</p>
+
       </div>
     </div>
   );
