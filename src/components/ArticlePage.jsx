@@ -26,14 +26,13 @@ const ArticlePage = () => {
     : null;
 
 
-  const { web_url, lead_paragraph, abstract } = articleData;
-
   return (
-    <div className="container mx-auto py-36 px-8">
-      <div className="shadow-lg rounded-lg">
-        <img src={imageUrl} alt={abstract} className="mb-4" />
-        <h1 className="text-4xl font-bold mb-4">{web_url}</h1>
-        <p className="text-lg mb-4">{lead_paragraph}</p>
+    <div className="container mx-auto py-8 px-4">
+      <div className="max-w-2x1 mx-auto">
+        <img src={imageUrl} alt={articleData.abstract} className="mb-4" />
+        <h1 className="text-3x1 font-semibold mb-2">{articleData.abstract}</h1>
+        <p className="text-lg mb-4">{articleData.lead_paragraph}</p>
+        <p className="text-lg mb-4">{articleData.web_url}</p>
 
       </div>
     </div>
