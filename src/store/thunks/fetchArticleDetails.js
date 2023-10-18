@@ -3,7 +3,7 @@ import axios from "axios";
 
 const fetchArticleDetails = createAsyncThunk('article/fetchArticleDetails',
 async (articleSlug) => {
-  const apiKey = 'jk0zRkfgK44Quumexe6GuzsbMPgHhaUx'
+  const apiKey = process.env.REACT_APP_NEWS_API_KEY;
 
   const url = `https://api.nytimes.com/svc/search/v2/articlesearch.json?q=${articleSlug}&api-key=${apiKey}`;
   try {
